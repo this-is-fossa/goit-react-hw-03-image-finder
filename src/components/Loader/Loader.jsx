@@ -1,7 +1,11 @@
+import { ThreeDots } from  'react-loader-spinner';
+import { LoaderWrapper } from './Loader.styled';
+
 export const Loader = () => {
     return (
-      <div>
-        <h2>Loading...</h2>
-      </div>
+        <LoaderWrapper>
+            <ThreeDots/>
+        </LoaderWrapper>
     );
-  };
+};
+

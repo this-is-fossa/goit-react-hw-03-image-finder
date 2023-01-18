@@ -1,4 +1,9 @@
 import { Component } from "react";
+import React from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { SearchbarHeader, SearchbarForm, SearchbarInput, SearchbarBtn, LabelBtn } from './Searchbar.styled';
+import PropTypes from 'prop-types';
 
 export class Searchbar extends Component {
 
@@ -15,7 +20,7 @@ export class Searchbar extends Component {
         e.preventDefault();
 
         if( this.state.query.trim() === '' ) {
-            return alert('empty field, enter the query')
+            return toast.error('empty field, enter the query')
         }
 
         this.props.onSubmit(this.state.query);
@@ -26,25 +31,27 @@ export class Searchbar extends Component {
         const { query } = this.state;
 
         return(
-            <header className="searchbar">
-                <form onSubmit={this.handleSubmit} className="form">
-                    <button
-                    type="submit" 
-                    className="button">
-                    <span className="button-label">Search</span>
-                    </button>
+            <SearchbarHeader className="searchbar">
+                <SearchbarForm onSubmit={this.handleSubmit} className="form">
+                    <SearchbarBtn
+                    type="submit">
+                    <LabelBtn>Search</LabelBtn>
+                    </SearchbarBtn>
 
-                    <input
+                    <SearchbarInput
                     onChange={this.handleChange}
                     value={query}
                     name='name'
-                    className="input"
                     type="text"
                     autoComplete="off"
                     placeholder="Search images and photos"
                     />
-                </form>
-            </header>
+                </SearchbarForm>
+            </SearchbarHeader>
         )
     }
 }
+
+Searchbar.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};

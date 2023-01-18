@@ -1,8 +1,13 @@
 import { Component } from "react";
+import { ToastContainer } from 'react-toastify';
 import { Searchbar } from "components/Searchbar/Searchbar";
 import { Message } from "components/Messages/Messages";
 import { ImageGallery } from "components/ImageGallery/ImageGallery";
 import { Button } from "components/Button/Button";
+import { Modal } from "components/Modal/Modal";
+import { Loader } from "components/Loader/Loader";
+
+import { AppGrid } from './App.styled';
 
 
 export class App extends Component {
@@ -25,7 +30,7 @@ export class App extends Component {
   };
 
   getLargeImg = url => {
-    this.setState({ largeImage: url });
+    this.setState({ largeImageUrl: url });
   };
 
   handleClick = () => {
@@ -41,11 +46,25 @@ export class App extends Component {
     }
   }
 
+  closeModal = () => {
+    this.setState({ largeImageUrl: null, loader: true })
+  }
+
+  handleLoad = () => {
+    this.setState({ loader: false })
+  }
+
+  handleError = () => {
+    this.setState({ loader: false })
+  }
+
+  
+
   render() {
-    const { query, page, hitsPerPage } = this.state;
+    const { largeImageUrl, query, page, hitsPerPage } = this.state;
 
     return(
-      <div>
+      <AppGrid>
         <Searchbar onSubmit={this.getInputQuery}/>
         {this.state.totalHits === 0 && (
           <Message text={`Sorry, no have picture of ${this.state.query}`} />
@@ -58,7 +77,19 @@ export class App extends Component {
           getImgUrl={this.getLargeImg}
         />
         {this.snowMoreImg() && <Button onClick={this.handleClick} />}
-      </div>
+        {largeImageUrl && (
+          <Modal closeModal={this.closeModal}>
+            {this.state.loader && <Loader />}
+            <img
+              src={this.state.largeImageUrl}
+              alt=""
+              onLoad={this.handleLoad}
+              onError={this.handleError}
+            />
+          </Modal>
+        )}
+        <ToastContainer/>
+      </AppGrid>
     )
   }
 }

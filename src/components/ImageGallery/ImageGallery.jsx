@@ -1,7 +1,12 @@
 import { Component } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { getImage } from "services/PixabayApi";
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 import { Loader } from "components/Loader/Loader";
+import { GalleryWraper, GalleryList } from './ImageGallery.styled';
+import PropTypes from 'prop-types';
+
 
 export class ImageGallery extends Component {
 
@@ -21,7 +26,7 @@ componentDidUpdate(prevProps) {
             this.props.getInfo(r.totalHits);
         })
         .catch(e => {
-            alert('error:' , e.message)
+            toast.error('error:' , e.message)
         })
         .finally(() => {
             this.setState({ loader: false })
@@ -36,7 +41,7 @@ componentDidUpdate(prevProps) {
                 this.props.getInfo(r.totalHits);
             })
             .catch(e => {
-                alert('error:', e.message)
+                toast.error('error:', e.message)
             })
             .finally(() => {
                 this.setState({ loader: false })
@@ -48,8 +53,8 @@ componentDidUpdate(prevProps) {
         const { images } = this.state;
 
         return (
-            <div>
-                <ul>
+            <GalleryWraper>
+                <GalleryList>
                     {images &&
                         images.map(image => (
                         <ImageGalleryItem
@@ -59,11 +64,19 @@ componentDidUpdate(prevProps) {
                             largeUrl={image.largeImageURL}
                         />
             ))}
-                </ul>
+                </GalleryList>
 
                 {this.state.loader && <Loader />}
-            </div>
+            </GalleryWraper>
         )
     }
 }
+
+ImageGallery.propTypes = {
+    currentPage: PropTypes.number.isRequired,
+    getImgUrl: PropTypes.func.isRequired,
+    getInfo: PropTypes.func.isRequired,
+    hitsPerPage: PropTypes.number.isRequired,
+    query: PropTypes.string,
+};
 

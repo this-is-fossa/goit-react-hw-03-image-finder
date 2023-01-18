@@ -1,4 +1,5 @@
-
+import { GalleryItem, GalleryImg } from './ImageGalleryItem.styled';
+import PropTypes from 'prop-types';
 
 export const ImageGalleryItem = ({ previewUrl, largeUrl, getImgUrl }) => {
     const handleClick = () => {
@@ -6,13 +7,19 @@ export const ImageGalleryItem = ({ previewUrl, largeUrl, getImgUrl }) => {
     }
 
     return (
-        <li>
-          <img
+        <GalleryItem>
+            <GalleryImg
             onClick={handleClick}
             src={previewUrl}
             alt=""
-          />
-        </li>
+            />
+        </GalleryItem>
     )
 }
 
+
+ImageGalleryItem.propTypes = {
+    previewUrl: PropTypes.string.isRequired,
+    largeUrl: PropTypes.string.isRequired,
+    getImgUrl: PropTypes.func.isRequired,
+};
